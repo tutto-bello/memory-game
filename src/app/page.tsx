@@ -1,113 +1,225 @@
-import Image from 'next/image'
+"use client";
+import { useState } from "react";
+import CardComponent from "../components/card-component";
+import { CardType, SpinType } from "../types";
+import Image from "next/image";
+
+const cards = [
+  {
+    id: "25d",
+    url: "https://cdn2.thecatapi.com/images/25d.jpg",
+    width: 3872,
+    height: 2200,
+  },
+  {
+    id: "2us",
+    url: "https://cdn2.thecatapi.com/images/2us.jpg",
+    width: 2048,
+    height: 1536,
+  },
+  {
+    id: "3sd",
+    url: "https://cdn2.thecatapi.com/images/3sd.gif",
+    width: 500,
+    height: 193,
+  },
+  {
+    id: "8m8",
+    url: "https://cdn2.thecatapi.com/images/8m8.jpg",
+    width: 2048,
+    height: 1536,
+  },
+  {
+    id: "8to",
+    url: "https://cdn2.thecatapi.com/images/8to.jpg",
+    width: 600,
+    height: 600,
+  },
+  {
+    id: "25d",
+    url: "https://cdn2.thecatapi.com/images/25d.jpg",
+    width: 3872,
+    height: 2200,
+  },
+  {
+    id: "2us",
+    url: "https://cdn2.thecatapi.com/images/2us.jpg",
+    width: 2048,
+    height: 1536,
+  },
+  {
+    id: "3sd",
+    url: "https://cdn2.thecatapi.com/images/3sd.gif",
+    width: 500,
+    height: 193,
+  },
+  {
+    id: "8m8",
+    url: "https://cdn2.thecatapi.com/images/8m8.jpg",
+    width: 2048,
+    height: 1536,
+  },
+  {
+    id: "8to",
+    url: "https://cdn2.thecatapi.com/images/8to.jpg",
+    width: 600,
+    height: 600,
+  },
+  {
+    id: "bib",
+    url: "https://cdn2.thecatapi.com/images/bib.jpg",
+    width: 500,
+    height: 338,
+  },
+  {
+    id: "ei4",
+    url: "https://cdn2.thecatapi.com/images/ei4.jpg",
+    width: 500,
+    height: 372,
+  },
+  {
+    id: "MTUwNTk4NQ",
+    url: "https://cdn2.thecatapi.com/images/MTUwNTk4NQ.gif",
+    width: 500,
+    height: 281,
+  },
+  {
+    id: "MTUzNjQwNw",
+    url: "https://cdn2.thecatapi.com/images/MTUzNjQwNw.jpg",
+    width: 1024,
+    height: 679,
+  },
+  {
+    id: "MTcxMzAzOA",
+    url: "https://cdn2.thecatapi.com/images/MTcxMzAzOA.jpg",
+    width: 640,
+    height: 358,
+  },
+  {
+    id: "bib",
+    url: "https://cdn2.thecatapi.com/images/bib.jpg",
+    width: 500,
+    height: 338,
+  },
+  {
+    id: "ei4",
+    url: "https://cdn2.thecatapi.com/images/ei4.jpg",
+    width: 500,
+    height: 372,
+  },
+  {
+    id: "MTUwNTk4NQ",
+    url: "https://cdn2.thecatapi.com/images/MTUwNTk4NQ.gif",
+    width: 500,
+    height: 281,
+  },
+  {
+    id: "MTUzNjQwNw",
+    url: "https://cdn2.thecatapi.com/images/MTUzNjQwNw.jpg",
+    width: 1024,
+    height: 679,
+  },
+  {
+    id: "MTcxMzAzOA",
+    url: "https://cdn2.thecatapi.com/images/MTcxMzAzOA.jpg",
+    width: 640,
+    height: 358,
+  },
+];
+
+const currentSpinEmptyState = {
+  cardId1: undefined,
+  cardIndex1: undefined,
+  cardId2: undefined,
+  cardIndex2: undefined,
+};
 
 export default function Home() {
+  const [currentSpin, setCurentSpin] = useState<SpinType>(
+    currentSpinEmptyState
+  );
+  const [foundPair, setFoundPair] = useState<string[]>([]);
+
+  const handleSpin = (id: string, cardIndex: number) => {
+    if (currentSpin.cardIndex1 === undefined) {
+      setCurentSpin({
+        cardId1: id,
+        cardIndex1: cardIndex,
+        cardId2: undefined,
+        cardIndex2: undefined,
+      });
+    } else if (
+      currentSpin.cardIndex1 !== cardIndex &&
+      currentSpin.cardIndex2 === undefined
+    ) {
+      setCurentSpin({
+        cardId1: currentSpin.cardId1,
+        cardIndex1: currentSpin.cardIndex1,
+        cardId2: id,
+        cardIndex2: cardIndex,
+      });
+    } else if (
+      currentSpin.cardIndex1 !== undefined &&
+      currentSpin.cardIndex2 !== undefined
+    ) {
+      if (currentSpin.cardId1 !== currentSpin.cardId2) {
+        setCurentSpin(currentSpinEmptyState);
+      } else {
+        if (currentSpin.cardId1) {
+          foundPair.push(currentSpin.cardId1);
+        }
+        setCurentSpin(currentSpinEmptyState);
+      }
+    }
+  };
+
+  const checkFound = (id: string) => {
+    return foundPair.includes(id);
+  };
+
+  const handelRestart = () => {
+    setFoundPair([]);
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    <div className="relative h-full">
+      <Image
+        src="/table-bg.jpg"
+        alt="Table"
+        layout="fill"
+        objectFit="cover"
+        objectPosition="center"
+      />
+      <main className="relative min-h-screen conatiner p-10">
+        {foundPair.length === cards.length / 2 ? (
+          <div className="text-center my-auto">
+            <h2 className="text-purple-500 text-3xl font-bold">
+              Congartualtion you win!
+            </h2>
+            <button
+              onClick={() => handelRestart()}
+              className="text-whitw uppercase rounded-md bg-purple-500 hover:opacity-75 font-bold px-4 py-2 mt-4"
+            >
+              restart
+            </button>
+          </div>
+        ) : (
+          <div className="max-w-[960px] mx-auto">
+            <div className="flex flex-wrap">
+              {cards.map((card, i) => (
+                <CardComponent
+                  key={card.id + i}
+                  card={card}
+                  currentSpin={currentSpin}
+                  handleSpin={handleSpin}
+                  index={i + 1}
+                  show={checkFound(card.id)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
 }

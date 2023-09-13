@@ -25,3 +25,9 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* main {
+  background-image: url("/table-bg.jpg");
+  object-fit: cover;
+  object-position: "center center";
+} */
