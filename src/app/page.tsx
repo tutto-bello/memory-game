@@ -1,131 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardComponent from "../components/card-component";
 import { CardType, SpinType } from "../types";
-import Image from "next/image";
-
-const cards = [
-  {
-    id: "25d",
-    url: "https://cdn2.thecatapi.com/images/25d.jpg",
-    width: 3872,
-    height: 2200,
-  },
-  {
-    id: "2us",
-    url: "https://cdn2.thecatapi.com/images/2us.jpg",
-    width: 2048,
-    height: 1536,
-  },
-  {
-    id: "3sd",
-    url: "https://cdn2.thecatapi.com/images/3sd.gif",
-    width: 500,
-    height: 193,
-  },
-  {
-    id: "8m8",
-    url: "https://cdn2.thecatapi.com/images/8m8.jpg",
-    width: 2048,
-    height: 1536,
-  },
-  {
-    id: "8to",
-    url: "https://cdn2.thecatapi.com/images/8to.jpg",
-    width: 600,
-    height: 600,
-  },
-  {
-    id: "25d",
-    url: "https://cdn2.thecatapi.com/images/25d.jpg",
-    width: 3872,
-    height: 2200,
-  },
-  {
-    id: "2us",
-    url: "https://cdn2.thecatapi.com/images/2us.jpg",
-    width: 2048,
-    height: 1536,
-  },
-  {
-    id: "3sd",
-    url: "https://cdn2.thecatapi.com/images/3sd.gif",
-    width: 500,
-    height: 193,
-  },
-  {
-    id: "8m8",
-    url: "https://cdn2.thecatapi.com/images/8m8.jpg",
-    width: 2048,
-    height: 1536,
-  },
-  {
-    id: "8to",
-    url: "https://cdn2.thecatapi.com/images/8to.jpg",
-    width: 600,
-    height: 600,
-  },
-  {
-    id: "bib",
-    url: "https://cdn2.thecatapi.com/images/bib.jpg",
-    width: 500,
-    height: 338,
-  },
-  {
-    id: "ei4",
-    url: "https://cdn2.thecatapi.com/images/ei4.jpg",
-    width: 500,
-    height: 372,
-  },
-  {
-    id: "MTUwNTk4NQ",
-    url: "https://cdn2.thecatapi.com/images/MTUwNTk4NQ.gif",
-    width: 500,
-    height: 281,
-  },
-  {
-    id: "MTUzNjQwNw",
-    url: "https://cdn2.thecatapi.com/images/MTUzNjQwNw.jpg",
-    width: 1024,
-    height: 679,
-  },
-  {
-    id: "MTcxMzAzOA",
-    url: "https://cdn2.thecatapi.com/images/MTcxMzAzOA.jpg",
-    width: 640,
-    height: 358,
-  },
-  {
-    id: "bib",
-    url: "https://cdn2.thecatapi.com/images/bib.jpg",
-    width: 500,
-    height: 338,
-  },
-  {
-    id: "ei4",
-    url: "https://cdn2.thecatapi.com/images/ei4.jpg",
-    width: 500,
-    height: 372,
-  },
-  {
-    id: "MTUwNTk4NQ",
-    url: "https://cdn2.thecatapi.com/images/MTUwNTk4NQ.gif",
-    width: 500,
-    height: 281,
-  },
-  {
-    id: "MTUzNjQwNw",
-    url: "https://cdn2.thecatapi.com/images/MTUzNjQwNw.jpg",
-    width: 1024,
-    height: 679,
-  },
-  {
-    id: "MTcxMzAzOA",
-    url: "https://cdn2.thecatapi.com/images/MTcxMzAzOA.jpg",
-    width: 640,
-    height: 358,
-  },
-];
+import { fetchCatImages, shuffleArray } from "../cat-images-service";
+import LayoutComponent from "../components/layout/layout-component";
+import LoadingComponent from "../components/loading-component";
 
 const currentSpinEmptyState = {
   cardId1: undefined,
@@ -135,6 +14,9 @@ const currentSpinEmptyState = {
 };
 
 export default function Home() {
+  const [isLoading, setLoading] = useState(false);
+  const [cards, setCards] = useState<CardType[]>([]);
+  const [limit, setLimit] = useState<number>(5);
   const [currentSpin, setCurentSpin] = useState<SpinType>(
     currentSpinEmptyState
   );
@@ -181,17 +63,22 @@ export default function Home() {
     setFoundPair([]);
   };
 
+  useEffect(() => {
+    setLoading(true);
+    fetchCatImages(limit)
+      .then((data) => {
+        if (data) {
+          setCards(shuffleArray([...data, ...data]));
+        }
+      })
+      .finally(() => setLoading(false));
+  }, [limit]);
+
   return (
-    <div className="relative h-full">
-      <Image
-        src="/table-bg.jpg"
-        alt="Table"
-        layout="fill"
-        objectFit="cover"
-        objectPosition="center"
-      />
-      <main className="relative min-h-screen conatiner p-10">
-        {foundPair.length === cards.length / 2 ? (
+    <LayoutComponent setLimit={setLimit}>
+      <div className="relative conatiner p-10">
+        {isLoading && <LoadingComponent />}
+        {foundPair.length === cards.length / 2 && !isLoading && (
           <div className="text-center my-auto">
             <h2 className="text-purple-500 text-3xl font-bold">
               Congartualtion you win!
@@ -203,7 +90,8 @@ export default function Home() {
               restart
             </button>
           </div>
-        ) : (
+        )}
+        {!isLoading && cards.length > 0 && (
           <div className="max-w-[960px] mx-auto">
             <div className="flex flex-wrap">
               {cards.map((card, i) => (
@@ -219,7 +107,7 @@ export default function Home() {
             </div>
           </div>
         )}
-      </main>
-    </div>
+      </div>
+    </LayoutComponent>
   );
 }

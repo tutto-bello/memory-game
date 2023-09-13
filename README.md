@@ -6,7 +6,7 @@
 
 First, add .env file and your API url:
 
-`NEXT_PUBLIC_API_URL="https://your.api.url"`
+`NEXT_PUBLIC_API_KEY="https://your.api.url"`
 
 Then run the development server:
 
