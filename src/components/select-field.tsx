@@ -5,12 +5,9 @@ interface SelectFieldProps {
 }
 
 const selectOption = [
-  { label: "Five", value: 5 },
-  { label: "Six", value: 6 },
-  { label: "Seven", value: 7 },
-  { label: "Eight", value: 8 },
-  { label: "Nine", value: 9 },
-  { label: "Ten", value: 10 },
+  { label: "Easy", value: 6 },
+  { label: "Medium", value: 9 },
+  { label: "Hard", value: 15 },
 ];
 
 const SelectField = (props: SelectFieldProps) => {
@@ -21,7 +18,7 @@ const SelectField = (props: SelectFieldProps) => {
         htmlFor="limit"
         className="block mb-1 text-sm font-medium text-gray-900"
       >
-        Select card pair number
+        Difficulty
       </label>
       <select
         id="limit"

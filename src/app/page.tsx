@@ -16,7 +16,8 @@ const currentSpinEmptyState = {
 export default function Home() {
   const [isLoading, setLoading] = useState(false);
   const [cards, setCards] = useState<CardType[]>([]);
-  const [limit, setLimit] = useState<number>(5);
+  const [isGameEnd, setIsGame] = useState<Boolean>(false);
+  const [limit, setLimit] = useState<number>(6);
   const [currentSpin, setCurentSpin] = useState<SpinType>(
     currentSpinEmptyState
   );
@@ -78,7 +79,7 @@ export default function Home() {
     <LayoutComponent setLimit={setLimit}>
       <div className="relative conatiner p-10">
         {isLoading && <LoadingComponent />}
-        {foundPair.length === cards.length / 2 && !isLoading && (
+        {foundPair.length === cards.length / 2 && !isLoading && isGameEnd && (
           <div className="text-center my-auto">
             <h2 className="text-purple-500 text-3xl font-bold">
               Congartualtion you win!
@@ -92,7 +93,7 @@ export default function Home() {
           </div>
         )}
         {!isLoading && cards.length > 0 && (
-          <div className="max-w-[960px] mx-auto">
+          <div className="max-w-[1155px] mx-auto">
             <div className="flex flex-wrap">
               {cards.map((card, i) => (
                 <CardComponent
