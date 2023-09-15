@@ -6,31 +6,43 @@ import { CardType } from "../../types";
 
 interface LayoutComponentProps {
   children: React.ReactNode;
-  setLimit: Dispatch<SetStateAction<number>>;
-  setTheme: Dispatch<SetStateAction<"dog" | "cat">>;
-  foundPair: string[];
+  isGameStart: boolean;
+  mode: "singlePlayer" | "multiPlayer";
   cards: CardType[];
-  moves: number;
+  foundPairPlayerOne: string[];
+  movesPlayerOne: number;
+  foundPairPlayerTwo: string[];
+  movesPlayerTwo: number;
+  playerOneName: string;
+  playerTwoName: string;
 }
 
 const LayoutComponent = (props: LayoutComponentProps) => {
-  const { children, setLimit, setTheme, foundPair, cards, moves } = props;
+  const {
+    children,
+    isGameStart,
+    mode,
+    foundPairPlayerOne,
+    cards,
+    movesPlayerOne,
+    foundPairPlayerTwo,
+    movesPlayerTwo,
+    playerOneName,
+    playerTwoName,
+  } = props;
   return (
     <div className="relative h-full">
-      <Image
-        src="/table-bg.jpg"
-        alt="Table"
-        layout="fill"
-        objectFit="cover"
-        objectPosition="center"
-        className="min-h-screen"
-      />
+      <Image src="/table-bg.jpg" alt="Table" fill className="min-h-screen" />
       <HeaderComponent
-        setLimit={setLimit}
-        setTheme={setTheme}
-        foundPair={foundPair}
+        isGameStart={isGameStart}
+        mode={mode}
         cards={cards}
-        moves={moves}
+        foundPairPlayerOne={foundPairPlayerOne}
+        movesPlayerOne={movesPlayerOne}
+        foundPairPlayerTwo={foundPairPlayerTwo}
+        movesPlayerTwo={movesPlayerTwo}
+        playerOneName={playerOneName}
+        playerTwoName={playerTwoName}
       />
       <div className="container mx-auto">{children}</div>
       <FooterComponent />

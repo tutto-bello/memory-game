@@ -1,12 +1,13 @@
 import React from "react";
 import { CardType, SpinType } from "../types";
+import Image from "next/image";
 
 interface CardComponentProps {
   card: CardType;
   currentSpin: SpinType;
   handleSpin: (id: string, cardIndex: number) => void;
   index: number;
-  show: boolean;
+  found: boolean;
 }
 
 const CardComponent = (props: CardComponentProps) => {
@@ -15,7 +16,7 @@ const CardComponent = (props: CardComponentProps) => {
     currentSpin,
     handleSpin,
     index,
-    show,
+    found,
   } = props;
 
   const checkId = (index: number) => {
@@ -31,9 +32,9 @@ const CardComponent = (props: CardComponentProps) => {
   return (
     <div
       className={`group h-20 w-20 md:h-28 md:w-28 xl:h-40 xl:w-40 m-1 md:m-2 xl:m-4 cursor-pointer duration-500 [perspective:1000px] ${
-        show && "opacity-0"
+        found && "opacity-0 cursor-auto"
       }`}
-      onClick={() => handleSpin(id, index)}
+      onClick={!found ? () => handleSpin(id, index) : undefined}
     >
       <div
         className={`relative h-full w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] ${
@@ -41,17 +42,24 @@ const CardComponent = (props: CardComponentProps) => {
         }`}
       >
         <div className="absolute inset-0">
-          <img
-            className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
+          <Image
+            className={`h-full w-full rounded-xl object-cover shadow-xl shadow-black/40 ${
+              found && "hidden"
+            }`}
             src="/card-bg.png"
-            alt=""
+            alt="Card Background"
+            width={112}
+            height={112}
           />
         </div>
         <div className="absolute inset-0 h-full w-full rounded-xl text-center [transform:rotateY(180deg)] [backface-visibility:hidden]">
-          <img
+          <Image
             className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
+            width={112}
+            height={112}
+            loading="eager"
             src={url}
-            alt=""
+            alt={url}
           />
         </div>
       </div>

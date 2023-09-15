@@ -5,6 +5,8 @@ import { CardType, SpinType } from "../types";
 import { fetchCatImages, shuffleArray } from "../cat-images-service";
 import LayoutComponent from "../components/layout/layout-component";
 import LoadingComponent from "../components/loading-component";
+import DashboardComponent from "../components/dashboard-component";
+import ResultDisplayComponent from "../components/result-display-component";
 
 const currentSpinEmptyState = {
   cardId1: undefined,
@@ -17,13 +19,24 @@ export default function Home() {
   const [isLoading, setLoading] = useState(false);
   const [cards, setCards] = useState<CardType[]>([]);
   const [theme, setTheme] = useState<"cat" | "dog">("dog");
-  const [isGameEnd, setIsGameEnd] = useState<Boolean>(false);
+  const [isGameStart, setIsGameStart] = useState<boolean>(false);
+  const [showResults, setShowResults] = useState<boolean>(false);
   const [limit, setLimit] = useState<number>(6);
   const [currentSpin, setCurentSpin] = useState<SpinType>(
     currentSpinEmptyState
   );
-  const [foundPair, setFoundPair] = useState<string[]>([]);
-  const [moves, setMoves] = useState<number>(0);
+  const [mode, setMode] = useState<"singlePlayer" | "multiPlayer">(
+    "singlePlayer"
+  );
+  const [currentPlayer, setCurrentPlayer] = useState<1 | 2>(1);
+  const [playerOneName, setPlayerOneName] = useState<string>("");
+  const [playerTwoName, setPlayerTwoName] = useState<string>("");
+
+  const [foundPairPlayerOne, setFoundPairPlayerOne] = useState<string[]>([]);
+  const [movesPlayerOne, setMovesPlayerOne] = useState<number>(0);
+
+  const [foundPairPlayerTwo, setFoundPairPlayerTwo] = useState<string[]>([]);
+  const [movesPlayerTwo, setMovesPlayerTwo] = useState<number>(0);
 
   const handleSpin = (id: string, cardIndex: number) => {
     if (currentSpin.cardIndex1 === undefined) {
@@ -47,12 +60,24 @@ export default function Home() {
       currentSpin.cardIndex1 !== undefined &&
       currentSpin.cardIndex2 !== undefined
     ) {
-      setMoves((previusNumber) => previusNumber + 1);
+      if (currentPlayer === 1) {
+        setMovesPlayerOne((previusNumber) => previusNumber + 1);
+      } else {
+        setMovesPlayerTwo((previusNumber) => previusNumber + 1);
+      }
       if (currentSpin.cardId1 !== currentSpin.cardId2) {
+        if (mode === "multiPlayer") {
+          setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+        }
         setCurentSpin(currentSpinEmptyState);
       } else {
-        if (currentSpin.cardId1) {
-          foundPair.push(currentSpin.cardId1);
+        if (mode === "singlePlayer") {
+          foundPairPlayerOne.push(currentSpin.cardId1!);
+        }
+        if (mode === "multiPlayer") {
+          currentPlayer === 1
+            ? foundPairPlayerOne.push(currentSpin.cardId1!)
+            : foundPairPlayerTwo.push(currentSpin.cardId1!);
         }
         setCurentSpin(currentSpinEmptyState);
       }
@@ -60,14 +85,25 @@ export default function Home() {
   };
 
   const checkFound = (id: string) => {
-    return foundPair.includes(id);
+    return foundPairPlayerOne.includes(id) || foundPairPlayerTwo.includes(id);
   };
+
+  console.log(foundPairPlayerOne, "foundPairPlayerOne");
+  console.log(foundPairPlayerTwo, "foundPairPlayerTwo");
 
   const handelRestart = () => {
     setCurentSpin(currentSpinEmptyState);
-    setIsGameEnd(false);
-    setMoves(0);
-    setFoundPair([]);
+    setIsGameStart(true);
+    setShowResults(false);
+    setMovesPlayerOne(0);
+    setMovesPlayerTwo(0);
+    setFoundPairPlayerOne([]);
+    setFoundPairPlayerTwo([]);
+  };
+
+  const handleStartNewGame = () => {
+    setIsGameStart(false);
+    setShowResults(false);
   };
 
   useEffect(() => {
@@ -92,36 +128,49 @@ export default function Home() {
         500
       );
     }
-    if (foundPair.length === cards.length) {
-      setIsGameEnd(true);
+    if (cards.length > 0) {
+      if (foundPairPlayerOne.length === cards.length / 2) {
+        setShowResults(true);
+      }
+      if (
+        foundPairPlayerOne.length + foundPairPlayerTwo.length ===
+        cards.length / 2
+      ) {
+        setShowResults(true);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSpin]);
 
   return (
     <LayoutComponent
-      setLimit={setLimit}
-      setTheme={setTheme}
-      foundPair={foundPair}
+      isGameStart={isGameStart}
+      mode={mode}
       cards={cards}
-      moves={moves}
+      foundPairPlayerOne={foundPairPlayerOne}
+      movesPlayerOne={movesPlayerOne}
+      foundPairPlayerTwo={foundPairPlayerTwo}
+      movesPlayerTwo={movesPlayerTwo}
+      playerOneName={playerOneName}
+      playerTwoName={playerTwoName}
     >
       <div className="relative conatiner p-2 md:p-5 xl:p-10">
-        {isLoading && <LoadingComponent />}
-        {foundPair.length === cards.length / 2 && !isLoading && isGameEnd && (
-          <div className="text-center my-auto">
-            <h2 className="text-purple-500 text-3xl font-bold">
-              Congartualtion you win!
-            </h2>
-            <button
-              onClick={() => handelRestart()}
-              className="text-whitw uppercase rounded-md bg-purple-500 hover:opacity-75 font-bold px-4 py-2 mt-4"
-            >
-              restart
-            </button>
-          </div>
+        {!isGameStart && (
+          <DashboardComponent
+            mode={mode}
+            setLimit={setLimit}
+            setMode={setMode}
+            theme={theme}
+            setTheme={setTheme}
+            setIsGameStart={setIsGameStart}
+            setPlayerOneName={setPlayerOneName}
+            setPlayerTwoName={setPlayerTwoName}
+          />
         )}
-        {!isLoading && cards.length > 0 && (
+
+        {isLoading && isGameStart && <LoadingComponent />}
+
+        {!isLoading && cards.length > 0 && isGameStart && !showResults && (
           <div className="max-w-[1155px] mx-auto">
             <div className="flex flex-wrap">
               {cards.map((card, i) => (
@@ -131,11 +180,23 @@ export default function Home() {
                   currentSpin={currentSpin}
                   handleSpin={handleSpin}
                   index={i + 1}
-                  show={checkFound(card.id)}
+                  found={checkFound(card.id)}
                 />
               ))}
             </div>
           </div>
+        )}
+
+        {!isLoading && showResults && (
+          <ResultDisplayComponent
+            handelRestart={handelRestart}
+            handleStartNewGame={handleStartNewGame}
+            mode={mode}
+            playerOneName={playerOneName}
+            playerTwoName={playerTwoName}
+            foundPairPlayerOne={foundPairPlayerOne}
+            foundPairPlayerTwo={foundPairPlayerTwo}
+          />
         )}
       </div>
     </LayoutComponent>
