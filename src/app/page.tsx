@@ -64,6 +64,7 @@ export default function Home() {
   };
 
   const handelRestart = () => {
+    setCurentSpin(currentSpinEmptyState);
     setIsGameEnd(false);
     setMoves(0);
     setFoundPair([]);
@@ -71,6 +72,7 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);
+    setCurentSpin(currentSpinEmptyState);
     fetchCatImages(theme, limit)
       .then((data) => {
         if (data) {
