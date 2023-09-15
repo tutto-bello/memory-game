@@ -30,7 +30,7 @@ const CardComponent = (props: CardComponentProps) => {
 
   return (
     <div
-      className={`group h-40 w-40 m-4 cursor-pointer duration-500 [perspective:1000px] ${
+      className={`group h-20 w-20 md:h-28 md:w-28 xl:h-40 xl:w-40 m-1 md:m-2 xl:m-4 cursor-pointer duration-500 [perspective:1000px] ${
         show && "opacity-0"
       }`}
       onClick={() => handleSpin(id, index)}

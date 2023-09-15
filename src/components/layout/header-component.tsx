@@ -24,7 +24,7 @@ const themeOptions = [
 const HeaderComponent = (props: HeaderComponentProps) => {
   const { setLimit, setTheme, foundPair, cards, moves } = props;
   return (
-    <div className="relative w-full items-center bg-transparent container pt-2 mx-auto">
+    <div className="relative w-full items-center bg-transparent container pt-2 mx-auto px-2">
       <div className="bg-white rounded-xl p-2 w-max flex ml-auto">
         <SelectField
           label="Difficulty"
@@ -38,13 +38,13 @@ const HeaderComponent = (props: HeaderComponentProps) => {
         />
         <div className="mr-4">
           <p className="text-black text-sm">Points</p>
-          <p className="text-black text-2xl mt-2">
+          <p className="text-black text-2xl mt-1">
             {cards.length / 2 + "/" + foundPair.length}
           </p>
         </div>
         <div>
           <p className="text-black text-sm">Moves</p>
-          <p className="text-black text-2xl mt-2">{moves}</p>
+          <p className="text-black text-2xl mt-1">{moves}</p>
         </div>
       </div>
     </div>

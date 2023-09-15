@@ -18,7 +18,7 @@ const SelectField = (props: SelectFieldProps) => {
       </label>
       <select
         id="limit"
-        className="w-20 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+        className="w-20 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1.5"
         onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
           onChange(event.target.value)
         }

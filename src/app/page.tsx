@@ -64,19 +64,10 @@ export default function Home() {
   };
 
   const handelRestart = () => {
+    setIsGameEnd(false);
     setMoves(0);
     setFoundPair([]);
   };
-
-  // const handleCardClick = (id: string, cardIndex: number) => {
-  //   handleSpin(id, cardIndex);
-  //   if (
-  //     currentSpin.cardIndex1 !== undefined &&
-  //     currentSpin.cardIndex2 !== undefined
-  //   ) {
-  //     setMoves((previusNumber) => previusNumber + 1);
-  //   }
-  // };
 
   useEffect(() => {
     setLoading(true);
@@ -99,6 +90,9 @@ export default function Home() {
         500
       );
     }
+    if (foundPair.length === cards.length) {
+      setIsGameEnd(true);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSpin]);
 
@@ -110,7 +104,7 @@ export default function Home() {
       cards={cards}
       moves={moves}
     >
-      <div className="relative conatiner p-10">
+      <div className="relative conatiner p-2 md:p-5 xl:p-10">
         {isLoading && <LoadingComponent />}
         {foundPair.length === cards.length / 2 && !isLoading && isGameEnd && (
           <div className="text-center my-auto">

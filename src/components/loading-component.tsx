@@ -9,7 +9,7 @@ const LoadingComponent = () => {
         {placeholderNumber.map((number) => (
           <div
             key={number}
-            className="animate-pulse h-40 w-40 m-4 bg-gray-200 rounded-xl shadow-xl "
+            className="animate-pulse h-20 w-20 md:h-28 md:w-28 xl:h-40 xl:w-40 m-1 md:m-2 xl:m-4 bg-gray-200 rounded-xl shadow-xl "
           ></div>
         ))}
       </div>
