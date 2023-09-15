@@ -4,9 +4,10 @@
 
 ## Getting Started
 
-First, add .env file and your API url:
+First, add .env file and your API-s url:
 
-`NEXT_PUBLIC_API_KEY="https://your.api.url"`
+`NEXT_PUBLIC_API_KEY_FOR_CATS="https://your.cat-api.url"`
+`NEXT_PUBLIC_API_KEY_FOR_DOGS="https://your.dog-api.url"`
 
 Then run the development server:
 
