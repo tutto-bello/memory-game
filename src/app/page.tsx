@@ -16,12 +16,14 @@ const currentSpinEmptyState = {
 export default function Home() {
   const [isLoading, setLoading] = useState(false);
   const [cards, setCards] = useState<CardType[]>([]);
-  const [isGameEnd, setIsGame] = useState<Boolean>(false);
+  const [theme, setTheme] = useState<"cat" | "dog">("dog");
+  const [isGameEnd, setIsGameEnd] = useState<Boolean>(false);
   const [limit, setLimit] = useState<number>(6);
   const [currentSpin, setCurentSpin] = useState<SpinType>(
     currentSpinEmptyState
   );
   const [foundPair, setFoundPair] = useState<string[]>([]);
+  const [moves, setMoves] = useState<number>(0);
 
   const handleSpin = (id: string, cardIndex: number) => {
     if (currentSpin.cardIndex1 === undefined) {
@@ -45,6 +47,7 @@ export default function Home() {
       currentSpin.cardIndex1 !== undefined &&
       currentSpin.cardIndex2 !== undefined
     ) {
+      setMoves((previusNumber) => previusNumber + 1);
       if (currentSpin.cardId1 !== currentSpin.cardId2) {
         setCurentSpin(currentSpinEmptyState);
       } else {
@@ -61,22 +64,52 @@ export default function Home() {
   };
 
   const handelRestart = () => {
+    setMoves(0);
     setFoundPair([]);
   };
 
+  // const handleCardClick = (id: string, cardIndex: number) => {
+  //   handleSpin(id, cardIndex);
+  //   if (
+  //     currentSpin.cardIndex1 !== undefined &&
+  //     currentSpin.cardIndex2 !== undefined
+  //   ) {
+  //     setMoves((previusNumber) => previusNumber + 1);
+  //   }
+  // };
+
   useEffect(() => {
     setLoading(true);
-    fetchCatImages(limit)
+    fetchCatImages(theme, limit)
       .then((data) => {
         if (data) {
           setCards(shuffleArray([...data, ...data]));
         }
       })
       .finally(() => setLoading(false));
-  }, [limit]);
+  }, [limit, theme]);
+
+  useEffect(() => {
+    if (
+      currentSpin.cardId1 !== undefined &&
+      currentSpin.cardId1 === currentSpin.cardId2
+    ) {
+      setTimeout(
+        () => handleSpin(currentSpin.cardId1!, currentSpin.cardIndex1!),
+        500
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSpin]);
 
   return (
-    <LayoutComponent setLimit={setLimit}>
+    <LayoutComponent
+      setLimit={setLimit}
+      setTheme={setTheme}
+      foundPair={foundPair}
+      cards={cards}
+      moves={moves}
+    >
       <div className="relative conatiner p-10">
         {isLoading && <LoadingComponent />}
         {foundPair.length === cards.length / 2 && !isLoading && isGameEnd && (

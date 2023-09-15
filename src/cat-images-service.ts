@@ -1,13 +1,16 @@
 import axios from "axios";
 import { CardType } from "./types";
 
-export const fetchCatImages = async (limit: number) => {
+export const fetchCatImages = async (theme: "dog" | "cat", limit: number) => {
   try {
     const response = await axios.get<CardType[]>(
-      `https://api.thecatapi.com/v1/images/search?limit=${limit}`,
+      `https://api.the${theme}api.com/v1/images/search?limit=${limit}`,
       {
         headers: {
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+          "x-api-key":
+            theme === "cat"
+              ? process.env.NEXT_PUBLIC_API_KEY_FOR_CATS
+              : process.env.NEXT_PUBLIC_API_KEY_FOR_DOGS,
         },
       }
     );
