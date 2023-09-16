@@ -15,6 +15,10 @@ interface LayoutComponentProps {
   movesPlayerTwo: number;
   playerOneName: string;
   playerTwoName: string;
+  currentPlayer: 2 | 1;
+  handelRestart: () => void;
+  handleStartNewGame: () => void;
+  showResults: boolean;
 }
 
 const LayoutComponent = (props: LayoutComponentProps) => {
@@ -29,6 +33,10 @@ const LayoutComponent = (props: LayoutComponentProps) => {
     movesPlayerTwo,
     playerOneName,
     playerTwoName,
+    currentPlayer,
+    handelRestart,
+    handleStartNewGame,
+    showResults,
   } = props;
   return (
     <div className="relative h-full">
@@ -43,9 +51,15 @@ const LayoutComponent = (props: LayoutComponentProps) => {
         movesPlayerTwo={movesPlayerTwo}
         playerOneName={playerOneName}
         playerTwoName={playerTwoName}
+        currentPlayer={currentPlayer}
       />
       <div className="container mx-auto">{children}</div>
-      <FooterComponent />
+      <FooterComponent
+        isGameStart={isGameStart}
+        showResults={showResults}
+        handelRestart={handelRestart}
+        handleStartNewGame={handleStartNewGame}
+      />
     </div>
   );
 };

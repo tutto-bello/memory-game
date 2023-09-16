@@ -12,6 +12,7 @@ interface HeaderComponentProps {
   mode: "singlePlayer" | "multiPlayer";
   playerOneName: string;
   playerTwoName: string;
+  currentPlayer: 2 | 1;
 }
 
 const HeaderComponent = (props: HeaderComponentProps) => {
@@ -25,6 +26,7 @@ const HeaderComponent = (props: HeaderComponentProps) => {
     movesPlayerTwo,
     playerOneName,
     playerTwoName,
+    currentPlayer,
   } = props;
   if (!isGameStart) {
     return null;
@@ -32,43 +34,23 @@ const HeaderComponent = (props: HeaderComponentProps) => {
   return (
     <div className="relative w-full items-center bg-transparent container pt-2 mx-auto px-2 py-2 flex">
       {mode === "multiPlayer" && (
-        // <div className="bg-white rounded-xl p-2 w-max flex">
-        //   <div className="mr-4">
-        //     <p className="text-black text-sm">Points</p>
-        //     <p className="text-black text-2xl mt-1">
-        //       {cards.length / 2 + "/" + foundPairPlayerTwo.length}
-        //     </p>
-        //   </div>
-        //   <div>
-        //     <p className="text-black text-sm">Moves</p>
-        //     <p className="text-black text-2xl mt-1">{movesPlayerTwo}</p>
-        //   </div>
-        // </div>
         <ResultCounterComponent
           name={playerTwoName}
           cardsNumber={cards.length}
           foundPairNumber={foundPairPlayerTwo.length}
           movesNumber={movesPlayerTwo}
+          isActive={currentPlayer === 2}
         />
       )}
-      {/* <div className="bg-white rounded-xl p-2 w-max flex ml-auto">
-        <div className="mr-4">
-          <p className="text-black text-sm">Points</p>
-          <p className="text-black text-2xl mt-1">
-            {cards.length / 2 + "/" + foundPairPlayerOne.length}
-          </p>
-        </div>
-        <div>
-          <p className="text-black text-sm">Moves</p>
-          <p className="text-black text-2xl mt-1">{movesPlayerOne}</p>
-        </div>
-      </div> */}
-      <ResultCounterComponent
-        name={playerOneName}
-        cardsNumber={cards.length}
-        foundPairNumber={foundPairPlayerOne.length}
-        movesNumber={movesPlayerOne}
-      />
+      <div className="ml-auto">
+        <ResultCounterComponent
+          name={playerOneName}
+          cardsNumber={cards.length}
+          foundPairNumber={foundPairPlayerOne.length}
+          movesNumber={movesPlayerOne}
+          isActive={currentPlayer === 1}
+        />
+      </div>
     </div>
   );
 };

@@ -4,7 +4,7 @@ const placeholderNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 const LoadingComponent = () => {
   return (
-    <div className="max-w-[1155px] mx-auto">
+    <div className="max-w-[264px] md:max-w-[640px] lg:max-w-[768px] xl:max-w-[1155px] mx-auto">
       <div className="flex flex-wrap">
         {placeholderNumber.map((number) => (
           <div

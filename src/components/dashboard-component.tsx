@@ -12,6 +12,8 @@ interface DashboardComponent {
   setIsGameStart: Dispatch<SetStateAction<boolean>>;
   setPlayerOneName: Dispatch<SetStateAction<string>>;
   setPlayerTwoName: Dispatch<SetStateAction<string>>;
+  playerOneName: string;
+  playerTwoName: string;
 }
 
 const modeOptions = [
@@ -40,15 +42,18 @@ const DashboardComponent = (props: DashboardComponent) => {
     setIsGameStart,
     setPlayerOneName,
     setPlayerTwoName,
+    playerOneName,
+    playerTwoName,
   } = props;
 
   return (
-    <div className="bg-white mx-auto w-max p-6 relative rounded-xl">
-      <h2 className="text-2xl text-purple-500 font-bold uppercase text-center mb-4 mt-2">
+    <div className="bg-white mx-auto md:w-max p-6 relative rounded-xl">
+      <h2 className="text-xl md:text-2xl text-purple-500 font-bold uppercase text-center mb-4 mt-2">
         welcome to the memory game table
       </h2>
-      <p className="mb-4 text-center">
-        Please select a mode, theme and difficulty to let the fun begin!
+      <p className="text-gray-500 mb-4 text-center max-w-md mx-auto">
+        Please select a mode, theme, difficulty and give your name to let the
+        fun begin!
       </p>
       <div>
         <RadioButtonsComponent
@@ -57,13 +62,13 @@ const DashboardComponent = (props: DashboardComponent) => {
           onChange={setMode}
           value={mode}
         />
-        <div className="flex">
+        <div className="md:flex">
           <TextFieldComponent
             onChange={setPlayerOneName}
             label="Player One Name"
           />
           {mode === "multiPlayer" && (
-            <div className="ml-6 transition duration-300">
+            <div className="md:ml-6">
               <TextFieldComponent
                 onChange={setPlayerTwoName}
                 label="Player Two Name"
@@ -85,8 +90,13 @@ const DashboardComponent = (props: DashboardComponent) => {
       />
       <div className="text-center">
         <button
+          disabled={
+            mode === "multiPlayer"
+              ? playerOneName === "" || playerTwoName === ""
+              : playerOneName === ""
+          }
           onClick={() => setIsGameStart(true)}
-          className="text-whitw uppercase rounded-md bg-purple-500 hover:opacity-75 font-bold px-4 py-2 mt-4 text-white"
+          className="text-whitw uppercase rounded-md bg-purple-500 hover:opacity-75 font-bold px-4 py-2 mt-4 text-white disabled:bg-gray-400 disable:opacity-90 disabled:cursor-not-allowed"
         >
           Start
         </button>

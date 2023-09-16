@@ -102,6 +102,13 @@ export default function Home() {
   };
 
   const handleStartNewGame = () => {
+    setCurentSpin(currentSpinEmptyState);
+    setPlayerOneName("");
+    setPlayerTwoName("");
+    setMovesPlayerOne(0);
+    setMovesPlayerTwo(0);
+    setFoundPairPlayerOne([]);
+    setFoundPairPlayerTwo([]);
     setIsGameStart(false);
     setShowResults(false);
   };
@@ -153,6 +160,10 @@ export default function Home() {
       movesPlayerTwo={movesPlayerTwo}
       playerOneName={playerOneName}
       playerTwoName={playerTwoName}
+      currentPlayer={currentPlayer}
+      handelRestart={handelRestart}
+      handleStartNewGame={handleStartNewGame}
+      showResults={showResults}
     >
       <div className="relative conatiner p-2 md:p-5 xl:p-10">
         {!isGameStart && (
@@ -165,13 +176,15 @@ export default function Home() {
             setIsGameStart={setIsGameStart}
             setPlayerOneName={setPlayerOneName}
             setPlayerTwoName={setPlayerTwoName}
+            playerOneName={playerOneName}
+            playerTwoName={playerTwoName}
           />
         )}
 
         {isLoading && isGameStart && <LoadingComponent />}
 
         {!isLoading && cards.length > 0 && isGameStart && !showResults && (
-          <div className="max-w-[1155px] mx-auto">
+          <div className="max-w-[264px] md:max-w-[640px] lg:max-w-[768px] xl:max-w-[1155px] mx-auto">
             <div className="flex flex-wrap">
               {cards.map((card, i) => (
                 <CardComponent
@@ -196,6 +209,8 @@ export default function Home() {
             playerTwoName={playerTwoName}
             foundPairPlayerOne={foundPairPlayerOne}
             foundPairPlayerTwo={foundPairPlayerTwo}
+            movesPlayerOne={movesPlayerOne}
+            movesPlayerTwo={movesPlayerTwo}
           />
         )}
       </div>
