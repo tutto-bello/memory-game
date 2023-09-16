@@ -11,3 +11,18 @@ export interface SpinType {
   cardId2: string | undefined;
   cardIndex2: number | undefined;
 }
+
+export interface FoundPairType {
+  playerOne: string[];
+  playerTwo: string[];
+}
+
+export interface MovesType {
+  playerOne: number;
+  playerTwo: number;
+}
+
+export interface TimerType {
+  playerOne: number;
+  playerTwo: number;
+}

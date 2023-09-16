@@ -1,4 +1,6 @@
 import React from "react";
+import { giveTime } from "../utils";
+import { TimerType } from "../types";
 
 interface ResultDisplayComponentProps {
   handelRestart: () => void;
@@ -10,6 +12,7 @@ interface ResultDisplayComponentProps {
   foundPairPlayerTwo: string[];
   movesPlayerOne: number;
   movesPlayerTwo: number;
+  timer: TimerType;
 }
 
 const ResultDisplayComponent = (props: ResultDisplayComponentProps) => {
@@ -23,12 +26,22 @@ const ResultDisplayComponent = (props: ResultDisplayComponentProps) => {
     foundPairPlayerTwo,
     movesPlayerOne,
     movesPlayerTwo,
+    timer,
   } = props;
 
   const findWinner = () => {
-    return foundPairPlayerOne.length > foundPairPlayerTwo.length
-      ? playerOneName
-      : playerTwoName;
+    const playerOneScore =
+      foundPairPlayerOne.length - movesPlayerOne * 0.1 + timer.playerOne * 0.01;
+    const playerTwoScore =
+      foundPairPlayerTwo.length - movesPlayerTwo * 0.1 + timer.playerTwo * 0.01;
+
+    if (playerOneScore > playerTwoScore) {
+      return "Congratulations " + playerOneName + " you are the winner!";
+    } else if (playerTwoScore > playerOneScore) {
+      return "Congratulations " + playerTwoName + " you are the winner!";
+    } else {
+      return "It's a tie!";
+    }
   };
 
   return (
@@ -36,8 +49,7 @@ const ResultDisplayComponent = (props: ResultDisplayComponentProps) => {
       <h2 className="text-purple-500 text-2xl font-bold">
         {mode === "singlePlayer" &&
           "Congratulations on your results " + playerOneName + "!"}
-        {mode === "multiPlayer" &&
-          "Congratulations " + findWinner() + " you are the winner!"}
+        {mode === "multiPlayer" && findWinner()}
       </h2>
       <p className="my-4 text-gray-500">
         {mode === "singlePlayer" &&
@@ -45,14 +57,19 @@ const ResultDisplayComponent = (props: ResultDisplayComponentProps) => {
             foundPairPlayerOne.length +
             " pairs in a total of " +
             movesPlayerOne +
-            " moves."}
+            " moves with in " +
+            giveTime(timer.playerOne) +
+            " time."}
+
         {mode === "multiPlayer" &&
           playerOneName +
             " found " +
             foundPairPlayerOne.length +
             " pairs in a total of " +
             movesPlayerOne +
-            " moves."}
+            " moves with in " +
+            giveTime(timer.playerOne) +
+            " time."}
       </p>
       {mode === "multiPlayer" && (
         <p className="my-4 text-gray-500">
@@ -61,7 +78,9 @@ const ResultDisplayComponent = (props: ResultDisplayComponentProps) => {
             foundPairPlayerTwo.length +
             " pairs in a total of " +
             movesPlayerTwo +
-            " moves."}
+            " moves with in " +
+            giveTime(timer.playerTwo) +
+            " time."}
         </p>
       )}
       <div className="flex justify-center">

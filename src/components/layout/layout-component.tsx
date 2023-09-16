@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import FooterComponent from "./footer-component";
 import HeaderComponent from "./header-component";
 import Image from "next/image";
-import { CardType } from "../../types";
+import { CardType, TimerType } from "../../types";
 
 interface LayoutComponentProps {
   children: React.ReactNode;
@@ -19,6 +19,7 @@ interface LayoutComponentProps {
   handelRestart: () => void;
   handleStartNewGame: () => void;
   showResults: boolean;
+  timer: TimerType;
 }
 
 const LayoutComponent = (props: LayoutComponentProps) => {
@@ -37,6 +38,7 @@ const LayoutComponent = (props: LayoutComponentProps) => {
     handelRestart,
     handleStartNewGame,
     showResults,
+    timer,
   } = props;
   return (
     <div className="relative h-full">
@@ -52,6 +54,7 @@ const LayoutComponent = (props: LayoutComponentProps) => {
         playerOneName={playerOneName}
         playerTwoName={playerTwoName}
         currentPlayer={currentPlayer}
+        timer={timer}
       />
       <div className="container mx-auto">{children}</div>
       <FooterComponent

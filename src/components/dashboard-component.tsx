@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import RadioButtonsComponent from "./input-fileds/radio-buttons-component";
 import SelectFieldComponent from "./input-fileds/select-field-component";
 import TextFieldComponent from "./input-fileds/text-field-component";
+import { modeOptions, themeOptions, difficultyOption } from "../utils";
 
 interface DashboardComponent {
   setLimit: Dispatch<SetStateAction<number>>;
@@ -15,22 +16,6 @@ interface DashboardComponent {
   playerOneName: string;
   playerTwoName: string;
 }
-
-const modeOptions = [
-  { label: "One Player", value: "singlePlayer" },
-  { label: "Two Player", value: "multiPlayer" },
-];
-
-const themeOptions = [
-  { label: "Dogs", value: "dog" },
-  { label: "Cats", value: "cat" },
-];
-
-const difficultyOption = [
-  { label: "Easy", value: "6" },
-  { label: "Medium", value: "9" },
-  { label: "Hard", value: "15" },
-];
 
 const DashboardComponent = (props: DashboardComponent) => {
   const {

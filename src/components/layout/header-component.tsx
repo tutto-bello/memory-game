@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { CardType } from "../../types";
+import React from "react";
+import { CardType, TimerType } from "../../types";
 import ResultCounterComponent from "../result-counter-component";
 
 interface HeaderComponentProps {
@@ -13,6 +13,7 @@ interface HeaderComponentProps {
   playerOneName: string;
   playerTwoName: string;
   currentPlayer: 2 | 1;
+  timer: TimerType;
 }
 
 const HeaderComponent = (props: HeaderComponentProps) => {
@@ -27,6 +28,7 @@ const HeaderComponent = (props: HeaderComponentProps) => {
     playerOneName,
     playerTwoName,
     currentPlayer,
+    timer,
   } = props;
   if (!isGameStart) {
     return null;
@@ -40,6 +42,7 @@ const HeaderComponent = (props: HeaderComponentProps) => {
           foundPairNumber={foundPairPlayerTwo.length}
           movesNumber={movesPlayerTwo}
           isActive={currentPlayer === 2}
+          time={timer.playerTwo}
         />
       )}
       <div className="ml-auto">
@@ -49,6 +52,7 @@ const HeaderComponent = (props: HeaderComponentProps) => {
           foundPairNumber={foundPairPlayerOne.length}
           movesNumber={movesPlayerOne}
           isActive={currentPlayer === 1}
+          time={timer.playerOne}
         />
       </div>
     </div>
