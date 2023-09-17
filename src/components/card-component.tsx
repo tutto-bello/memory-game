@@ -43,7 +43,7 @@ const CardComponent = (props: CardComponentProps) => {
       >
         <div className="absolute inset-0">
           <Image
-            className={`h-full w-full rounded-xl object-cover shadow-xl shadow-black/40 ${
+            className={`h-full w-full rounded-xl object-cover shadow-xl shadow-black/40 bg-gray-300 ${
               found && "hidden"
             }`}
             src="/card-bg.png"
