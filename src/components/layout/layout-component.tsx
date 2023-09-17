@@ -42,7 +42,13 @@ const LayoutComponent = (props: LayoutComponentProps) => {
   } = props;
   return (
     <div className="relative h-full">
-      <Image src="/table-bg.jpg" alt="Table" fill className="min-h-screen" />
+      <Image
+        src="/table-bg.jpg"
+        alt="Table"
+        fill
+        className="min-h-screen"
+        loading="eager"
+      />
       <HeaderComponent
         isGameStart={isGameStart}
         mode={mode}
