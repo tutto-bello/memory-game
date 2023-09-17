@@ -194,7 +194,7 @@ export default function Home() {
       mode={mode}
       cards={cards}
       foundPairPlayerOne={foundPairs.playerOne}
-      movesPlayerOne={moves.playerTwo}
+      movesPlayerOne={moves.playerOne}
       foundPairPlayerTwo={foundPairs.playerTwo}
       movesPlayerTwo={moves.playerTwo}
       playerOneName={playerOneName}
