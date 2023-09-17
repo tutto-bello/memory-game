@@ -40,52 +40,52 @@ const DashboardComponent = (props: DashboardComponent) => {
         Please select a mode, theme, difficulty and give your name to let the
         fun begin!
       </p>
-      <div>
-        <RadioButtonsComponent
-          label="Mode"
-          options={modeOptions}
-          onChange={setMode}
-          value={mode}
-        />
-        <div className="md:flex">
-          <TextFieldComponent
-            onChange={setPlayerOneName}
-            label="Player One Name"
+      <form onSubmit={() => setIsGameStart(true)}>
+        <div>
+          <RadioButtonsComponent
+            label="Mode"
+            options={modeOptions}
+            onChange={setMode}
+            value={mode}
           />
-          {mode === "multiPlayer" && (
-            <div className="md:ml-6">
-              <TextFieldComponent
-                onChange={setPlayerTwoName}
-                label="Player Two Name"
-              />
-            </div>
-          )}
+          <div className="md:flex">
+            <TextFieldComponent
+              onChange={setPlayerOneName}
+              label="Player One Name"
+              placeholder="Your name"
+              required
+            />
+            {mode === "multiPlayer" && (
+              <div className="md:ml-6">
+                <TextFieldComponent
+                  onChange={setPlayerTwoName}
+                  label="Player Two Name"
+                  required
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <RadioButtonsComponent
-        label="Theme"
-        options={themeOptions}
-        onChange={setTheme}
-        value={theme}
-      />
-      <SelectFieldComponent
-        label="Difficulty"
-        onChange={setLimit}
-        selectOption={difficultyOption}
-      />
-      <div className="text-center">
-        <button
-          disabled={
-            mode === "multiPlayer"
-              ? playerOneName === "" || playerTwoName === ""
-              : playerOneName === ""
-          }
-          onClick={() => setIsGameStart(true)}
-          className="text-whitw uppercase rounded-md bg-purple-500 hover:opacity-75 font-bold px-4 py-2 mt-4 text-white disabled:bg-gray-400 disable:opacity-90 disabled:cursor-not-allowed"
-        >
-          Start
-        </button>
-      </div>
+        <RadioButtonsComponent
+          label="Theme"
+          options={themeOptions}
+          onChange={setTheme}
+          value={theme}
+        />
+        <SelectFieldComponent
+          label="Difficulty"
+          onChange={setLimit}
+          selectOption={difficultyOption}
+        />
+        <div className="text-center">
+          <button
+            type="submit"
+            className="text-whitw uppercase rounded-md bg-purple-500 hover:opacity-75 font-bold px-4 py-2 mt-4 text-white disabled:bg-gray-400 disable:opacity-90 disabled:cursor-not-allowed"
+          >
+            Start
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
