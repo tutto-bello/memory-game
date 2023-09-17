@@ -60,6 +60,7 @@ const DashboardComponent = (props: DashboardComponent) => {
                 <TextFieldComponent
                   onChange={setPlayerTwoName}
                   label="Player Two Name"
+                  placeholder="Player Two Name"
                   required
                 />
               </div>
