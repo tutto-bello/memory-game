@@ -20,3 +20,5 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can find the documentation here: [https://www.craft.me/s/FbFO1CQdZ0mneo](https://www.craft.me/s/FbFO1CQdZ0mneo)
